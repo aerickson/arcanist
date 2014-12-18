@@ -294,9 +294,13 @@ EOTEXT
           $branch_name);
       }
 
-      echo phutil_console_format(
-        "Created and checked out branch %s.\n",
-        $branch_name);
+      // Don't message about this branch if shouldBranch() is true (i.e.
+      // --nobranch was passed in) as it will be deleted later.
+      if ($this->shouldBranch()) {
+        echo phutil_console_format(
+          "Created and checked out branch %s.\n",
+          $branch_name);
+      }
     } else if ($repository_api instanceof ArcanistMercurialAPI) {
       $branch_name = $this->getBookmarkName($bundle);
       $base_revision = $bundle->getBaseRevision();
